@@ -35,13 +35,8 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
-*.json
-*.js
+
+
 *.lock
 *.nix
-node_modules 2/lodash/LICENSE
-node_modules 2/lodash/README.md
-node_modules 2/lodash/release.md
-node_modules/lodash/LICENSE
-node_modules/lodash/README.md
-node_modules/lodash/release.md
+node_modules
