@@ -40,4 +40,4 @@ Temporary Items
 *.lock
 *.nix
 node_modules
-log.txt
+*.txt
