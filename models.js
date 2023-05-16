@@ -1,42 +1,46 @@
-const mongoose = require('mongoose');
-let movieSchema = mongoose.Schema({
-    title: {type: String, required: true},
-    description: {type: String, required: true}, 
-    genre: {
-        name: String,
-        description: String
+const { default: mongoose } = require('mongoose'); //Import mongoose
+const bcrypt = require('bcrypt'); //Import bcrypt
+
+let movieSchema = mongoose.Schema({ //Schema for movies
+    Title: {type: String, required: true}, //Title of movie
+    Description: {type: String, required: true}, //Description of movie
+    Genre: { //Genre of movie
+        Name: String, //Name of genre
+        Description: String //Description of genre
     },
-    director: {
-        name: String
+    Director: { //Director of movie
+        Name: String, //Name of director
+        Bio: String, //Bio of director
     },
-    actors: [String],
-    image_path: String,
-    featured: Boolean
+    Actors: [String], //Actors in movie
+    ImagePath: String, //Image of movie
+    Featured: Boolean //Featured movie
 });
 
-let userSchema = mongoose.Schema({
-    Username: {type: String, required: true},
-    Password: {type: String, required: true},
-    Email: {type: String, required: false},
-    Birthday: Date,
-    FavoriteMovies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
+let userSchema = mongoose.Schema({ //Schema for users 
+    Username: {type: String, required: true}, //Username of user is required
+    Password: {type: String, required: true}, //Password of user is required
+    Email: {type: String, required: true}, // Email of user is required
+    Birthday: Date, //Birthday of user
+    FavoriteMovies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}] // Favorite movies of user
 });
 
-let genreSchema = mongoose.Schema({
-    Name: {type: String, required: true},
-    Description: {type: String, required: true}
-});
+//Hash password
+userSchema.statics.hashPassword = (password) => { 
+    return bcrypt.hashSync(password, 10);
+};
 
-let directorSchema = mongoose.Schema({
-    Name: {type: String, required: true}
-});
+//Validate password
+userSchema.methods.validatePassword = function(password) { 
+    console.log(password, this.Password);
+    return bcrypt.compareSync(password, this.Password); 
+}; 
 
-let Director = mongoose.model('Director', directorSchema);
-let Genre = mongoose.model('Genre', genreSchema);
-let Movie = mongoose.model('Movie', movieSchema);
-let User = mongoose.model('User', userSchema);
+// creation of models
+let Movie = mongoose.model('Movie', movieSchema); //Movie model
+let User = mongoose.model('User', userSchema); //User model
 
-module.exports.Director = Director;
-module.exports.Genre = Genre;
-module.exports.Movie = Movie;
-module.exports.User = User;
+
+//export models
+module.exports.Movie = Movie; //Export movie model
+module.exports.User = User; //Export user model
